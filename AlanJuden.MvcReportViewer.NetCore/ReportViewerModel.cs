@@ -35,10 +35,14 @@ namespace AlanJuden.MvcReportViewer
 		/// </summary>
 		public System.Net.ICredentials Credentials { get; set; }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public Dictionary<string, string[]> Parameters { get; set; }
+        public string Username { get; set;  }
+        public string Password { get; set; }
+        public string Domain { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<string, string[]> Parameters { get; set; }
 
 		public bool ShowHiddenParameters { get; set; }
 		public ReportViewModes ViewMode { get; set; }

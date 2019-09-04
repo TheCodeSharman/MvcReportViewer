@@ -12,14 +12,23 @@ namespace AlanJuden.MvcReportViewer
 {
 	public abstract class ReportController : Controller
 	{
-		protected abstract System.Net.ICredentials NetworkCredentials { get; }
+		protected System.Net.ICredentials NetworkCredentials
+        {
+            get
+            {
+                return new System.Net.NetworkCredential( Username, Password, Domain);
+            }
+        }
 		protected abstract string ReportServerUrl { get; }
+        protected abstract string Username { get; }
+        protected abstract string Password { get; }
+        protected abstract string Domain { get; }
 
-		/// <summary>
-		/// This indicates whether or not to replace image urls from your report server to image urls on your local site to act as a proxy
-		/// *useful if your report server is not accessible publicly*
-		/// </summary>
-		protected virtual bool UseCustomReportImagePath { get { return false; } }
+        /// <summary>
+        /// This indicates whether or not to replace image urls from your report server to image urls on your local site to act as a proxy
+        /// *useful if your report server is not accessible publicly*
+        /// </summary>
+        protected virtual bool UseCustomReportImagePath { get { return false; } }
 		protected virtual bool AjaxLoadInitialReport { get { return true; } }
 		protected virtual System.Text.Encoding Encoding { get { return System.Text.Encoding.ASCII; } }
 
@@ -229,6 +238,9 @@ namespace AlanJuden.MvcReportViewer
 			model.AjaxLoadInitialReport = this.AjaxLoadInitialReport;
 			model.ClientCredentialType = this.ClientCredentialType;
 			model.Credentials = this.NetworkCredentials;
+            model.Username = this.Username;
+            model.Password = this.Password;
+            model.Domain = this.Domain;
 
 			var enablePagingResult = _getRequestValue(request, "ReportViewerEnablePaging");
 			if (enablePagingResult.HasValue())

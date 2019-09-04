@@ -68,10 +68,13 @@ namespace AlanJuden.MvcReportViewer
 
 			var basicHttpBinding = _initializeHttpBinding(url, model);
 			var service = new ReportService.ReportingService2005SoapClient(basicHttpBinding, new System.ServiceModel.EndpointAddress(url));
-			service.ClientCredentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
+            /*service.ClientCredentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
 			service.ClientCredentials.Windows.ClientCredential = (System.Net.NetworkCredential)(model.Credentials ?? System.Net.CredentialCache.DefaultCredentials);
+            */
+            service.ClientCredentials.UserName.UserName = model.Domain + "\\" + model.Username;
+            service.ClientCredentials.UserName.Password = model.Password;
 
-			string historyID = null;
+            string historyID = null;
 			ReportService.ParameterValue[] values = null;
 			ReportService.DataSourceCredentials[] rsCredentials = null;
 			
@@ -121,10 +124,12 @@ namespace AlanJuden.MvcReportViewer
 
 			var basicHttpBinding = _initializeHttpBinding(url, model);
 			var service = new ReportServiceExecution.ReportExecutionServiceSoapClient(basicHttpBinding, new System.ServiceModel.EndpointAddress(url));
-			service.ClientCredentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
-			service.ClientCredentials.Windows.ClientCredential = (System.Net.NetworkCredential)(model.Credentials ?? System.Net.CredentialCache.DefaultCredentials);
+			/*service.ClientCredentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
+			service.ClientCredentials.Windows.ClientCredential = (System.Net.NetworkCredential)(model.Credentials ?? System.Net.CredentialCache.DefaultCredentials);*/
+            service.ClientCredentials.UserName.UserName = model.Domain + "\\" + model.Username;
+            service.ClientCredentials.UserName.Password = model.Password;
 
-			var exportResult = new ReportExportResult();
+            var exportResult = new ReportExportResult();
 			exportResult.CurrentPage = (startPage.ToInt32() <= 0 ? 1 : startPage.ToInt32());
 			exportResult.SetParameters(definedReportParameters, model.Parameters);
 
@@ -254,10 +259,11 @@ namespace AlanJuden.MvcReportViewer
 
 			var basicHttpBinding = _initializeHttpBinding(url, model);
 			var service = new ReportServiceExecution.ReportExecutionServiceSoapClient(basicHttpBinding, new System.ServiceModel.EndpointAddress(url));
-			service.ClientCredentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
-			service.ClientCredentials.Windows.ClientCredential = (System.Net.NetworkCredential)(model.Credentials ?? System.Net.CredentialCache.DefaultCredentials);
-
-			var definedReportParameters = GetReportParameters(model, true);
+			/*service.ClientCredentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
+			service.ClientCredentials.Windows.ClientCredential = (System.Net.NetworkCredential)(model.Credentials ?? System.Net.CredentialCache.DefaultCredentials);*/
+            service.ClientCredentials.UserName.UserName = model.Domain + "\\" + model.Username;
+            service.ClientCredentials.UserName.Password = model.Password;
+            var definedReportParameters = GetReportParameters(model, true);
 
 			if (!startPage.HasValue || startPage == 0)
 			{
